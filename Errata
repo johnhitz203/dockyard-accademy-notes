@@ -1,0 +1,3 @@
+# Errata
+<ins>Should read</ins>
+Using the file system is one ~~term~~ form of long-term persistence. When we save a file, we save it to a storage device on our computer, usually a solid state drive or hard disc drive.
