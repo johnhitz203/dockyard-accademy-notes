@@ -72,6 +72,9 @@
 ## LiveView Navigation
 <ins>Note:</ins> - An updated URL does not necessarily correspond ot a different LiveView
 
+### Navigation
+* Four main things - Can reset state or not depending on the navigation function used
+
 ### Live vs Push
 * Live - Used on the front end (in HTML)
   *  Creates a link in the Heex template
@@ -92,3 +95,37 @@
   * Does not reset state
 * push_redirect - Returns to base URL and remounts the LiveView
 * push_patch - Does not remount the LiveView eg it does not retrieve any new data that has been created
+
+## Image Upload(files)
+<ins>Note: </ins> State is held in the `socket`
+
+* We need to ready the state for uploads
+  ```elixir
+  def mount(_params, _session, socket) do
+    {:ok, allow_upload(socket, :my_images, accept: ~w(.jpg .jpeg) max_entries: 2)}
+  end
+  ``` 
+  * `~w(...)` - can be any file type
+    * `~w` - converts to a list of strings
+  * The above code creates an @uploads key on the socket.
+  * `<.live_file_input @uploads.media>`
+    * `<%= live_file_input @uploads.media>` in LiveView 0.17
+
+### Three Steps
+1. Prime socket with key and file type with allow_upload
+2. Add live_file_input to form html
+3. Consume the image - Move it from the tmp directory to the "priv/static/image/file_name"
+   `consume_uploaded_entries`
+4. Display the image
+
+## Preview Images
+* `@uploads.media.entries` - Where `midia` is the key in mount
+* Users file name - Stored in `entries.client_name`
+
+## Drag-And-Drop
+```html
+<label id="drag-n-drop"  class="drag-n-drop" phx-drop-target={@uploads.picture.ref}>
+      Click or drag and drop to upload image
+      <%= live_file_input @uploads.picture, style: "display: none;" %>
+</label>
+```
