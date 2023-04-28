@@ -28,8 +28,12 @@ def module BST do
   end
 
   def insert(tree, priority, data) do
+    # inserted element never becomes a parent. That is it
+    # is always inserted as an empty sub-tree.
+    empty = new()
     case tree do
-      new() -> new(priority, data)
+      # ~~new() -> new(priority, data)~~ not allowed
+      ^empty -> new(priority, data) || {} -> new(priority, data)
       {left, {p, d}, right} ->
         if priority > p do
           {left, {p, d}, insert(right, priority, data)}
